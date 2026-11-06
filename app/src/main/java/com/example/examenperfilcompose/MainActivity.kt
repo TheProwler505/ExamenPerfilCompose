@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,6 +22,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -46,9 +48,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -104,8 +104,8 @@ fun DeveloperProfileScreen(
 
     val comentarios = remember {
         mutableStateListOf(
-            Comentario("Hal Jordan", "Excelente arquitectura móvil en el Sector 2814."),
-            Comentario("Kilowog", "¡Código sólido y bien estructurado, recluta!")
+            Comentario("Lehi", "¡Increíble portafolio! El diseño y la arquitectura están impecables."),
+            Comentario("Hassan", "Excelente trabajo, el código es muy limpio y la interfaz súper fluida.")
         )
     }
 
@@ -129,39 +129,13 @@ fun DeveloperProfileScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(160.dp)
-                .background(
-                    Brush.horizontalGradient(
-                        colors = listOf(
-                            Color(0xFF002B23),
-                            darkEmerald,
-                            Color(0xFF00796B)
-                        )
-                    )
-                )
         ) {
-            // Logo Green Lantern y texto decorativo a la derecha
-            Column(
-                modifier = Modifier
-                    .align(Alignment.CenterEnd)
-                    .padding(end = 16.dp),
-                horizontalAlignment = Alignment.End
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.gl_logo),
-                    contentDescription = "Green Lantern Logo",
-                    modifier = Modifier
-                        .size(80.dp)
-                        .alpha(0.25f)
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = "SECTOR 2814 // OA CORPS",
-                    color = emeraldBright.copy(alpha = 0.85f),
-                    fontSize = 11.sp,
-                    fontWeight = FontWeight.Bold,
-                    letterSpacing = 1.2.sp
-                )
-            }
+            Image(
+                painter = painterResource(id = R.drawable.mr_robot_banner),
+                contentDescription = "Portada",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
+            )
 
             // Foto de perfil superpuesta en la esquina inferior izquierda
             Box(
@@ -201,10 +175,19 @@ fun DeveloperProfileScreen(
             Spacer(modifier = Modifier.height(4.dp))
 
             Text(
+                text = "Ingeniero en Software | Desarrollador Web",
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Medium,
+                color = emeraldBright
+            )
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Text(
                 text = "gaelantdiaz@micorreo.upp.edu.mx",
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Medium,
-                color = emeraldBright
+                color = Color.LightGray
             )
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -228,7 +211,7 @@ fun DeveloperProfileScreen(
                     )
                     Spacer(modifier = Modifier.height(10.dp))
                     Text(
-                        text = "Desarrollador de Software (Ingeniería en TI e Innovación Digital - UPP) y Creador Audiovisual. Guardián del código en el Sector 2814, especializado en arquitecturas modernas, desarrollo móvil con Jetpack Compose, estructuras de datos y dirección creativa.",
+                        text = "Desarrollador de Software (Ingeniería en TI e Innovación Digital - UPP) y Creador Audiovisual, especializado en arquitecturas modernas, desarrollo móvil con Jetpack Compose, estructuras de datos y dirección creativa.",
                         fontSize = 14.sp,
                         lineHeight = 22.sp,
                         color = Color(0xFFE0F2F1)
@@ -239,12 +222,24 @@ fun DeveloperProfileScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        Text(
-            text = "Habilidades y Lenguajes (10)",
-            fontWeight = FontWeight.Bold,
-            color = Color.White,
-            modifier = Modifier.padding(horizontal = 16.dp)
-        )
+        // Sección de habilidades y lenguajes
+        Row(
+            modifier = Modifier.padding(horizontal = 16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "</> ",
+                fontWeight = FontWeight.Bold,
+                color = emeraldBright,
+                fontSize = 16.sp
+            )
+            Text(
+                text = "LENGUAJES DE PROGRAMACIÓN",
+                fontWeight = FontWeight.Bold,
+                color = Color.White,
+                fontSize = 16.sp
+            )
+        }
 
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -254,6 +249,20 @@ fun DeveloperProfileScreen(
         ) {
             items(skills) { skill ->
                 val isSelected = selectedSkill == skill
+                val iconRes = when (skill) {
+                    "Kotlin" -> R.drawable.kotlin
+                    "C++" -> R.drawable.cpp
+                    "Java" -> R.drawable.java
+                    "Python" -> R.drawable.python
+                    "TypeScript" -> R.drawable.typescript
+                    "SQL" -> R.drawable.sql
+                    "HTML/CSS" -> R.drawable.html_css
+                    "Angular" -> R.drawable.angular
+                    "Flask" -> R.drawable.flask
+                    "Laravel" -> R.drawable.laravel
+                    else -> R.drawable.kotlin
+                }
+
                 Surface(
                     shape = RoundedCornerShape(50),
                     color = if (isSelected) Color(0xFF00E676) else Color.Transparent,
@@ -263,11 +272,21 @@ fun DeveloperProfileScreen(
                         Log.i("Prowler", "Lenguaje seleccionado: $skill")
                     }
                 ) {
-                    Text(
-                        text = skill,
-                        color = if (isSelected) Color.Black else Color(0xFF00E676),
-                        modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp)
-                    )
+                    Row(
+                        modifier = Modifier.padding(vertical = 8.dp, horizontal = 14.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Image(
+                            painter = painterResource(id = iconRes),
+                            contentDescription = skill,
+                            modifier = Modifier.size(24.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = skill,
+                            color = if (isSelected) Color.Black else Color(0xFF00E676)
+                        )
+                    }
                 }
             }
         }
@@ -275,7 +294,7 @@ fun DeveloperProfileScreen(
         Spacer(modifier = Modifier.height(24.dp))
 
         Text(
-            text = "Ubicación (Base de Operaciones)",
+            text = "Ubicación",
             fontWeight = FontWeight.Bold,
             color = Color.White,
             modifier = Modifier.padding(horizontal = 16.dp)
@@ -283,11 +302,9 @@ fun DeveloperProfileScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
+        val uppCoordinates = LatLng(19.979903043345427, -98.6846767528567)
         val cameraPositionState = rememberCameraPositionState {
-            position = com.google.android.gms.maps.model.CameraPosition.fromLatLngZoom(
-                com.google.android.gms.maps.model.LatLng(20.047019, -98.731352),
-                16f
-            )
+            position = CameraPosition.fromLatLngZoom(uppCoordinates, 16f)
         }
 
         Box(
@@ -302,12 +319,10 @@ fun DeveloperProfileScreen(
                 modifier = Modifier.fillMaxSize(),
                 cameraPositionState = cameraPositionState
             ) {
-                com.google.maps.android.compose.Marker(
-                    state = com.google.maps.android.compose.MarkerState(
-                        position = com.google.android.gms.maps.model.LatLng(20.047019, -98.731352)
-                    ),
-                    title = "Base del Sector 2814 - Gael Díaz",
-                    snippet = "Fraccionamiento San Fernando, Hgo."
+                Marker(
+                    state = MarkerState(position = uppCoordinates),
+                    title = "Universidad Politécnica de Pachuca",
+                    snippet = "Zempoala, Hidalgo"
                 )
             }
         }
